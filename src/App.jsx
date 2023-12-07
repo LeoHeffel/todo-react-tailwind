@@ -60,8 +60,11 @@ function App() {
                 return todos;
         }
     };
+    const computedItemsLeft = todos.filter((todo) => !todo.completed).length;
+       
+   
     return (
-        <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] bg-no-repeat bg-contain min-h-screen bg-gray-100">
+        <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] bg-no-repeat bg-contain min-h-screen dark:bg-[url('./assets/images/bg-mobile-dark.jpg')] dark:bg-gray-900 bg-gray-100">
             <Header />
 
             <main className="container mx-auto px-4 mt-8 ">
@@ -69,12 +72,12 @@ function App() {
 
                 <TodoList todos={filterTodos(filter)} deleteTodo={deleteTodo} updateTodo={updateTodo} />
 
-                <TodoComputed todos={todos} clearCompleted={clearCompleted} />
+                <TodoComputed left={computedItemsLeft} clearCompleted={clearCompleted} />
 
                 <TodoFilter setFilter={setFilter} />
             </main>
 
-            <section className="container mx-auto px-4 text-center mt-8">
+            <section className="container mx-auto px-4 text-center mt-8  text-gray-400 ">
                 <p>Drag and drop to reorder list</p>
             </section>
             <footer className="container mx-auto px-4"></footer>

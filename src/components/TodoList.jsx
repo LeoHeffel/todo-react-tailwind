@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const TodoList = ({todos, deleteTodo,updateTodo}) => {
     return (
-        <div className="bg-white rounded-t-md  [&>article]:p-4 mt-8">
+        <div className="bg-white rounded-t-md  [&>article]:p-4 mt-8 ">
             {todos.map((todo) => (
                 <TodoItem key={todo.id} todo={todo} deleteTodo={deleteTodo} updateTodo={updateTodo}/>
             ))}

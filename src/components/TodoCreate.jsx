@@ -14,14 +14,14 @@ const ToDoCreate = ({ createTodo }) => {
 
     return (
         <form
-            className="flex items-center bg-white rounded-md overflow-hidden py-4 px-4 gap-4 "
+            className="flex items-center bg-white rounded-md overflow-hidden py-4 px-4 gap-4 dark:bg-gray-800 "
             onSubmit={handleSubmit}
         >
             <span className="rounded-full border-2  h-5 w-5 inline-block "></span>
             <input
                 type="text"
                 placeholder="Create a new todo..."
-                className="w-full text-gray-400 outline-none"
+                className="w-full text-gray-400 outline-none  dark:bg-gray-800 "
                 value={text}
                 onChange={(event) => setText(event.target.value)}
             />
