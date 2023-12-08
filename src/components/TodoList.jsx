@@ -8,7 +8,7 @@ const TodoList = ({ todos, deleteTodo, updateTodo }) => {
                 <div
                     ref={droppableProvider.innerRef}
                     {...droppableProvider.droppableProps}
-                    className="bg-white rounded-t-md overflow-hidden [&>article]:p-4 mt-8 "
+                    className="bg-white dark:bg-gray-800 rounded-t-md overflow-hidden [&>article]:p-4 mt-8 "
                 >
                     {todos.map((todo, index) => (
                         <Draggable
