@@ -3,7 +3,7 @@ import IconMoon from "./icons/IconMoon";
 import IconSun from "./icons/IconSun";
 const Header = () => {
 
-    const [darkMode, setDarkMode] = useState(localStorage.theme === 'dark');
+    const [darkMode, setDarkMode] = useState(localStorage.getItem('theme') === 'dark');
     
     const toggleTheme = () => {
         setDarkMode(!darkMode);
@@ -13,20 +13,20 @@ const Header = () => {
     
     useEffect(() => {
         if (darkMode) {
-            localStorage.removeItem('theme')
-            localStorage.theme = 'dark';
+            
+            localStorage.setItem('theme', 'dark') ;
             document.documentElement.classList.add('dark');
         } else {
-            localStorage.removeItem('theme')
+            
             document.documentElement.classList.remove('dark');
-            localStorage.theme = 'light';
+            localStorage.setItem('theme', 'light') 
         }
     }, [darkMode]);
 
     
 
     return (
-        <header className="container mx-auto px-4 pt-8">
+        <header className="container mx-auto px-4 pt-8 md:max-w-xl">
                 <div className="flex justify-between">
                     <h1 className=" uppercase text-white text-3xl font-semibold tracking-[.3em]">
                         Todo

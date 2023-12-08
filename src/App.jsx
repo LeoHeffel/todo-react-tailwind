@@ -1,51 +1,47 @@
-
+import { DragDropContext} from "@hello-pangea/dnd";
 import Header from "./components/Header";
 import ToDoCreate from "./components/TodoCreate";
 import TodoList from "./components/TodoList";
 import TodoComputed from "./components/TodoComputed";
 import TodoFilter from "./components/TodoFilter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const initialStateTodos = [
-    {
-        id: 1,
-        text: "Learn React",
-        completed: true
-    },
-    {
-        id: 2,
-        text: "Learn Tailwind",
-        completed: false
-    },
-    {
-        id: 3,
-        text: "Learn Vite",
-        completed: false
-    },
-    {
-        id: 4,
-        text: "Learn React Router",
-        completed: false
-    }
-];
+const initialStateTodos = JSON.parse(localStorage.getItem("todos")) || [];
+
+
+const reorder = (list, startIndex,endIndex) => {
+    const items = Array.from(list);
+    const [reorderedItem] = items.splice(startIndex, 1);
+    items.splice(endIndex, 0, reorderedItem);
+    return items;
+};
+
 function App() {
     const [todos, setTodos] = useState(initialStateTodos);
     const [filter, setFilter] = useState("all");
+
+    useEffect(() => {
+        localStorage.setItem("todos", JSON.stringify(todos));
+    }, [todos]);
     const createTodo = (text) => {
         setTodos([
             ...todos,
             {
                 id: Date.now(),
                 text,
-                completed: false
-            }
+                completed: false,
+            },
         ]);
     };
     const deleteTodo = (id) => {
         setTodos(todos.filter((todo) => todo.id !== id));
     };
     const updateTodo = (id) => {
-        setTodos(todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
+        setTodos(
+            todos.map((todo) =>
+                todo.id === id ? { ...todo, completed: !todo.completed } : todo
+            )
+        );
     };
     const clearCompleted = () => {
         setTodos(todos.filter((todo) => !todo.completed));
@@ -61,18 +57,37 @@ function App() {
         }
     };
     const computedItemsLeft = todos.filter((todo) => !todo.completed).length;
-       
-   
+
+    const handleDragEnd = (result) => {
+        if (!result.destination) return;
+
+        const items = reorder(
+            todos,
+            result.source.index,
+            result.destination.index
+        );
+        setTodos(items);}
+
     return (
-        <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] bg-no-repeat bg-contain min-h-screen dark:bg-[url('./assets/images/bg-mobile-dark.jpg')] dark:bg-gray-900 bg-gray-100">
+        <div className="bg-[url('./assets/images/bg-mobile-light.jpg')] md:bg-[url('./assets/images/bg-desktop-light.jpg')] bg-no-repeat bg-contain min-h-screen dark:bg-[url('./assets/images/bg-mobile-dark.jpg')] md:dark:bg-[url('./assets/images/bg-desktop-dark.jpg')] dark:bg-gray-900 bg-gray-100">
             <Header />
 
-            <main className="container mx-auto px-4 mt-8 ">
+            <main className="container mx-auto px-4 mt-8 md:max-w-xl">
                 <ToDoCreate createTodo={createTodo} />
 
-                <TodoList todos={filterTodos(filter)} deleteTodo={deleteTodo} updateTodo={updateTodo} />
+                <DragDropContext onDragEnd={handleDragEnd}>
+                    <TodoList
+                        todos={filterTodos(filter)}
+                        deleteTodo={deleteTodo}
+                        updateTodo={updateTodo}
+                    />
+                </DragDropContext>
 
-                <TodoComputed left={computedItemsLeft} clearCompleted={clearCompleted} />
+
+                <TodoComputed
+                    left={computedItemsLeft}
+                    clearCompleted={clearCompleted}
+                />
 
                 <TodoFilter setFilter={setFilter} />
             </main>

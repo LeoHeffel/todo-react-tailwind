@@ -1,10 +1,12 @@
 import CrossIcon from "./icons/IconCross";
 import PropTypes from "prop-types";
 import IconCheck from "./icons/IconCheck";
-const TodoItem = ({ todo, deleteTodo, updateTodo }) => {
+import React from "react";
+
+const TodoItem = React.forwardRef(({ todo, deleteTodo, updateTodo,...props }, ref) => {
     const { id, text, completed } = todo;
     return (
-        <article className="flex gap-4  border-b border-b-gray-400  dark:bg-gray-800">
+        <article {...props} ref={ref} className="flex gap-4  border-b border-b-gray-400  dark:bg-gray-800">
             <button
                 className={`rounded-full border-2  h-5 w-5 ${
                     completed &&
@@ -21,10 +23,11 @@ const TodoItem = ({ todo, deleteTodo, updateTodo }) => {
             </button>
         </article>
     );
-};
+})
 TodoItem.propTypes = {
     todo: PropTypes.object,
     deleteTodo: PropTypes.func,
     updateTodo: PropTypes.func,
 };
+TodoItem.displayName = "TodoItem";
 export default TodoItem;
